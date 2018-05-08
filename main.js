@@ -1,34 +1,24 @@
-function WarningBanner(props) {
-  if (!props.warn) {
-    return null;
-  }
-
-  return <div className="warning">Warning!</div>;
+function Blog(props) {
+  const sidebar = (
+    <ul>{props.posts.map(post => <li key={post.id}>{post.title}</li>)}</ul>
+  );
+  const content = props.posts.map(post => (
+    <div key={post.id}>
+      <h3>{post.title}</h3>
+      <p>{post.content}</p>
+    </div>
+  ));
+  return (
+    <div>
+      {sidebar}
+      <hr />
+      {content}
+    </div>
+  );
 }
 
-class Page extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { showWarning: true };
-    this.handleToggleClick = this.handleToggleClick.bind(this);
-  }
-
-  handleToggleClick() {
-    this.setState(prevState => ({
-      showWarning: !prevState.showWarning
-    }));
-  }
-
-  render() {
-    return (
-      <div>
-        <WarningBanner warn={this.state.showWarning} />
-        <button onClick={this.handleToggleClick}>
-          {this.state.showWarning ? 'Hide' : 'Show'}
-        </button>
-      </div>
-    );
-  }
-}
-
-ReactDOM.render(<Page />, document.getElementById('root'));
+const posts = [
+  { id: 1, title: 'Hello World', content: 'Welcome to learning React!' },
+  { id: 2, title: 'Installation', content: 'You can install React from npm.' }
+];
+ReactDOM.render(<Blog posts={posts} />, document.getElementById('root'));
