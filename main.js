@@ -1,45 +1,31 @@
-function FormattedDate(props) {
-  return <h2>It is {props.date.toLocaleTimeString()}.</h2>;
-}
-
-class Clock extends React.Component {
+class Toggle extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { date: new Date() };
+    this.state = { isToggleOn: true };
   }
 
-  componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 1000);
-  }
+  // This syntax ensures `this` is bound within handleClick.
+  // Warning: this is *experimental* syntax.
+  handleClick = (btnId, event) => {
+    console.log('btnId:', btnId, 'event target', event.target);
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
-
-  tick() {
-    this.setState({
-      date: new Date()
-    });
-  }
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn
+    }));
+  };
 
   render() {
     return (
       <div>
-        <h1>Hello, world!</h1>
-        <FormattedDate date={this.state.date} />
+        <button onClick={this.handleClick.bind(this, 1)}>
+          {this.state.isToggleOn ? 'ON' : 'OFF'}
+        </button>
+        <button onClick={this.handleClick.bind(this, 2)}>
+          {this.state.isToggleOn ? 'ON' : 'OFF'}
+        </button>
       </div>
     );
   }
 }
 
-function App() {
-  return (
-    <div>
-      <Clock />
-      <Clock />
-      <Clock />
-    </div>
-  );
-}
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<Toggle />, document.getElementById('root'));
